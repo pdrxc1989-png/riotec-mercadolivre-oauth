@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>Riotec - Autenticação Mercado Livre</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; color: #222; }
+    main { max-width: 640px; margin: 10vh auto; background: #fff; padding: 32px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,.08); }
+    h1 { margin-top: 0; font-size: 24px; }
+    .ok { color: #137333; }
+    .error { color: #b3261e; }
+    code { word-break: break-all; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Riotec - Mercado Livre</h1>
+  <p id="status">Processando retorno da autenticação...</p>
+  <p>Esta página não armazena tokens ou credenciais.</p>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const status = document.getElementById("status");
+  const params = new URLSearchParams(window.location.search);
+
+  const code = params.get("code");
+  const state = params.get("state");
+  const error = params.get("error");
+  const errorDescription = params.get("error_description");
+
+  if (error) {
+    status.className = "error";
+    status.textContent = "O Mercado Livre retornou um erro de autorização"
+      + (errorDescription ? ": " + errorDescription : ".");
+    return;
+  }
+
+  if (!code || !state) {
+    status.className = "error";
+    status.textContent = "Retorno inválido: parâmetros code e/ou state ausentes.";
+    return;
+  }
+
+  // Listener local planejado para o aplicativo desktop Riotec.
+  // O aplicativo deverá validar o state e usar o code_verifier do PKCE
+  // antes de trocar o authorization code por tokens.
+  const localCallback = new URL("http://127.0.0.1:8765/mercadolivre/callback");
+  localCallback.searchParams.set("code", code);
+  localCallback.searchParams.set("state", state);
+
+  status.className = "ok";
+  status.textContent = "Autorização recebida. Encaminhando ao sistema Riotec...";
+
+  // Remove code/state do histórico antes de sair desta página.
+  history.replaceState(null, "", window.location.pathname);
+
+  setTimeout(() => {
+    window.location.replace(localCallback.toString());
+  }, 250);
+})();
+</script>
+</body>
+</html>
