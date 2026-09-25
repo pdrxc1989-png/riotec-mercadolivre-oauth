@@ -1,0 +1,66 @@
+RIOTEC - MERCADO LIVRE OAUTH
+================================
+
+REPOSITÓRIO
+Nome: riotec-mercadolivre-oauth
+Proprietário: pdrxc1989-png
+Visibilidade: Público
+Branch principal: main
+
+FINALIDADE
+Este repositório será usado exclusivamente para hospedar a pequena página de callback OAuth da integração Riotec / Mercado Livre.
+
+ENDEREÇO DO REPOSITÓRIO
+https://github.com/pdrxc1989-png/riotec-mercadolivre-oauth
+
+GITHUB PAGES
+Depois de habilitado o GitHub Pages, o endereço base previsto será:
+
+https://pdrxc1989-png.github.io/riotec-mercadolivre-oauth/
+
+O callback previsto será:
+
+https://pdrxc1989-png.github.io/riotec-mercadolivre-oauth/callback.html
+
+ARQUIVO PRINCIPAL PREVISTO
+callback.html
+
+FUNÇÃO DO CALLBACK
+A página callback.html deverá:
+- receber o authorization code enviado pelo Mercado Livre;
+- receber e preservar o parâmetro state;
+- encaminhar esses dados para o aplicativo Riotec em execução local;
+- não armazenar credenciais ou tokens.
+
+SEGURANÇA
+NUNCA colocar neste repositório:
+- Client Secret;
+- Access Token;
+- Refresh Token;
+- code_verifier do PKCE;
+- senhas;
+- certificados;
+- chaves privadas;
+- qualquer credencial da Riotec ou do Mercado Livre.
+
+O repositório é público.
+
+O code_verifier do PKCE e demais segredos devem permanecer somente no aplicativo Riotec.
+
+ACESSO DO CHATGPT / GITHUB CONNECTOR
+O conector do ChatGPT foi autorizado somente para este repositório, com acesso de leitura e escrita.
+
+USO PREVISTO
+Fluxo planejado:
+
+Sistema Riotec
+  -> abre o navegador
+  -> Mercado Livre autoriza
+  -> redireciona para o GitHub Pages
+  -> callback.html recebe code + state
+  -> encaminha para listener local do Riotec
+  -> aplicativo valida state e usa PKCE
+  -> aplicativo solicita os tokens ao Mercado Livre
+
+OBSERVAÇÃO
+Este arquivo existe apenas como referência administrativa e técnica do projeto.
